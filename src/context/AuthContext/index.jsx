@@ -10,7 +10,7 @@ export function useAuth(){
     return useContext(AuthContext)
 }
 
-const AuthProvider = ({children}) => {
+export const AuthProvider = ({children}) => {
     const[currentUser,setCurrentUser] = useState(null)
     const[userLoggedIn,setUserLoggedIn] = useState(false)
     const[loading,setIsloading] = useState(true)
@@ -45,4 +45,4 @@ const AuthProvider = ({children}) => {
      );
 }
  
-export default AuthProvider;
+// export default AuthProvider;

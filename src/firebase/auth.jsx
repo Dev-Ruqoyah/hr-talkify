@@ -5,7 +5,7 @@ export const doCreateUserEmailAndPassword = async (email, password)=>{
 }
 
 export const doSignInWithEmailAndPassword = async(email,password)=>{
-    return signInWithEmailAndPassword(auth,password)
+    return signInWithEmailAndPassword(auth, email,password)
 }
 export const doSignInWithGoogle = async()=>{
     const provider = new GoogleAuthProvider()
