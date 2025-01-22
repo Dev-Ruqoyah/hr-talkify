@@ -19,7 +19,7 @@ const Home = () => {
         </div>
         <div className="grid md:grid-cols-2  md:h-[80vh]">
           <div className="flex mb-5 flex-col items-center justify-center gap-2">
-            <h2 className="text-4xl font-bold">Welcome to Recipe AI</h2>
+            <h2 className="text-4xl font-bold text-center">Welcome to Recipe AI</h2>
             <p className="">
               Enter the ingredients you have, and let our AI create delicious
               recipes for you!
