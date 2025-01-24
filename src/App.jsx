@@ -6,6 +6,7 @@ import Profile from "./pages/Profile/Profile";
 import Logout from "./pages/Logout/Logout";
 import Error from "./pages/Error/Error";
 import { AuthProvider } from "./context/AuthContext";
+import MealDetails from "./pages/Meal/DisplayMeal";
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/meal-detail/:name/:id" element={<MealDetails />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Error />} />
       </Routes>

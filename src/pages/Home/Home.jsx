@@ -26,7 +26,7 @@ const Home = () => {
             </p>
             <ButtonOne text={"Get Started"} url={"/login"}/>
           </div>
-          <div className="flex flex-col items-center justify-center h-full bg-slate-300 rounded-md">
+          <div className="flex flex-col items-center justify-center h-full bg-orange-500 rounded-md">
             {/* Ingredients List */}
             {!showDish && (
               <ul className="animate-fade-in space-y-2 text-lg font-medium text-gray-700" aria-live="polite">
@@ -47,7 +47,7 @@ const Home = () => {
               />
              
             )}
-            <p className="text-center w-2/3 text-black italic font-light ">Don't know what to cook with the ingredients in your kitchen? Our AI-powered Recipe
+            <p className="text-center w-2/3 text-white italic font-light ">Don't know what to cook with the ingredients in your kitchen? Our AI-powered Recipe
             Generator takes your available ingredients and generates creative recipes for you to try</p>
           </div>
         </div>
