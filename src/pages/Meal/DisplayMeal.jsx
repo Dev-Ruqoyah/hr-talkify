@@ -79,7 +79,7 @@ const MealDetails = () => {
               <h2 className="text-xl font-semibold text-gray-700 mb-2">
                 Ingredients
               </h2> 
-              <ul className="list-disc list-inside text-gray-700 h-40 overflow-y-scroll">
+              <ul className="list-disc list-inside text-gray-700 md:h-full h-40 md:overflow-hidden overflow-y-scroll">
                 {Array.from({ length: 20 }).map((_, index) => {
                   const ingredient = meal[`strIngredient${index + 1}`];
                   const measure = meal[`strMeasure${index + 1}`];
@@ -100,7 +100,7 @@ const MealDetails = () => {
               <h2 className="text-xl font-semibold text-gray-700 mb-2">
                 Instructions
               </h2>
-              <p className="text-gray-600 h-40 overflow-y-scroll">{meal.strInstructions}</p>
+              <p className="text-gray-600 md:h-full h-40 md:overflow-hidden overflow-y-scroll">{meal.strInstructions}</p>
             </div>
           </div>
         </div>

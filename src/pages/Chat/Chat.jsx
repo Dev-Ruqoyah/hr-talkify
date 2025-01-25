@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { doSignOut } from "../../firebase/auth";
 import axios from "axios";
-import { Link, Links } from "react-router-dom";
+import { Link, Links, Navigate, useNavigate } from "react-router-dom";
 
 const Chat = () => {
   const { currentUser } = useAuth();
+  const navigate = useNavigate()
   let userName = currentUser?.displayName || "User";
   let firstname = userName.split(" ")[0].toLowerCase();
 
@@ -88,9 +89,7 @@ const Chat = () => {
     setShowModal(!showModal);
     console.log("clicked");
   };
-  const signOut = () => {
-    doSignOut();
-  };
+
 
   return (
     <div className="flex flex-col h-screen bg-orange-200">
@@ -122,7 +121,13 @@ const Chat = () => {
 
           <li
             className="cursor-pointer text-red-600 font-semibold"
-            onClick={signOut}
+            onClick={() => {
+              doSignOut().then(() => {
+                navigate("/login");
+              });
+            }}
+            
+            
           >
             <small>LogOut</small>
           </li>
