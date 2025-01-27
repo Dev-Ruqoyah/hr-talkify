@@ -4,6 +4,7 @@ import { doCreateUserEmailAndPassword, doSignInWithGoogle } from "../../firebase
 import { Navigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
+
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -29,7 +30,7 @@ const Login = () => {
         await doSignInWithGoogle();
       } catch (error) {
         console.error(error);
-        toast.error("Google sign-in failed. Please try again.");
+        toast.error(error);
       } finally {
         setIsSigningIn(false);
       }
@@ -39,9 +40,9 @@ const Login = () => {
   return (
     <>
       {userLoggedIn && <Navigate to={"/chat"} replace={true} />}
-      <div className="flex items-center justify-center h-screen bg-slate-300">
+      <div className="flex items-center justify-center h-screen bg-orange-100">
         <div className="bg-white p-8 rounded-md shadow-lg w-full max-w-md ">
-          <h1 className="text-2xl font-bold mb-4 text-center">
+          <h1 className="text-2xl font-bold mb-4 text-orange-500 text-center">
             Welcome to Recipe AI
           </h1>
           <p className="text-gray-600 text-center mb-6">
@@ -85,7 +86,7 @@ const Login = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="Enter your email"
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 ${
                       errors.email && touched.email ? "border-red-500" : ""
                     }`}
                   />
@@ -107,7 +108,7 @@ const Login = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="Enter your password"
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 ${
                       errors.password && touched.password ? "border-red-500" : ""
                     }`}
                   />
@@ -120,7 +121,7 @@ const Login = () => {
                   className="w-full px-4 py-2 bg-orange-500 text-white font-semibold rounded-md shadow-md hover:bg-orange-600 transition duration-200"
                   disabled={isSubmitting || isSigningIn}
                 >
-                  {isSubmitting || isSigningIn ? "Signing Up..." : "Sign up with Email"}
+                  {isSubmitting || isSigningIn ? "Signing In..." : "Sign in with Email"}
                 </button>
               </form>
             )}

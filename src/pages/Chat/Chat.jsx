@@ -36,7 +36,7 @@ const Chat = () => {
   
     try {
       const response = await axios.get(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${inputValue}`
+        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${inputValue.split(",")[0].trim()}`
       );
       console.log(response
 

@@ -2,11 +2,9 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Authentication/Login";
 import Chat from "./pages/Chat/chat";
-import Profile from "./pages/Profile/Profile";
-import Logout from "./pages/Logout/Logout";
-import Error from "./pages/Error/Error";
 import { AuthProvider } from "./context/AuthContext";
 import MealDetails from "./pages/Meal/DisplayMeal";
+import NotFoundPage from "./pages/Error/Error";
 
 const App = () => {
   return (
@@ -17,8 +15,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/meal-detail/:name/:id" element={<MealDetails />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AuthProvider>
       

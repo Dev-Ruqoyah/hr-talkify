@@ -43,11 +43,11 @@ const Home = () => {
               <img
                 src={dish}
                 alt="Final Dish"
-                className="animate-scale-up w-2/3 h-2/3 object-cover rounded-md shadow-lg"
+                className="animate-scale-up w-2/3 h-2/3 object-cover md:p-0 pt-3 rounded-md shadow-lg"
               />
              
             )}
-            <p className="text-center w-2/3 text-white italic font-light ">Don't know what to cook with the ingredients in your kitchen? Our AI-powered Recipe
+            <p className="text-center md:w-2/3 text-white italic font-light  ">Don't know what to cook with the ingredients in your kitchen? Our AI-powered Recipe
             Generator takes your available ingredients and generates creative recipes for you to try</p>
           </div>
         </div>
