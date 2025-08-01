@@ -3,67 +3,93 @@ import { useAuth } from "../../context/AuthContext";
 import { doSignOut } from "../../firebase/auth";
 import axios from "axios";
 import { Link, Links, Navigate, useNavigate } from "react-router-dom";
+import { useChat } from "../../context/ChatContext";
 
 const Chat = () => {
   const { currentUser } = useAuth();
-  const navigate = useNavigate()
+  const { inputs, addInputs, addMessages, messages } = useChat();
+  const navigate = useNavigate();
   let userName = currentUser?.displayName || "User";
   let firstname = userName.split(" ")[0].toLowerCase();
 
-  const [message, setMessage] = useState([]);
+  // const [message, setMessage] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    console.log("Messages updated:", message);
-  }, [message]);
+  // useEffect(() => {
+  //   console.log(inputs);
+  // }, [input]);
 
   const generateRecipe = async () => {
     const inputValue = input.trim();
+    addInputs(inputValue);
+
     if (inputValue === "") return;
-  
+
     const userMessage = {
       text: inputValue,
       sender: "user",
       id: `req${Math.floor(Math.random() * 1000000)}`,
-      date: new Date(),
+      date: new Date()
+        .toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })
+        .replace(/\s/g, " "), // remove the space before AM/PM
     };
-  
-    setMessage((prev) => [...prev, userMessage]);
+
+    // setMessage((prev) => [...prev, userMessage]);
+    addMessages(userMessage);
+
     setInput("");
     setLoading(true);
-  
+
     try {
       const response = await axios.get(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${inputValue.split(",")[0].trim()}`
+        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${inputValue
+          .split(",")[0]
+          .trim()}`
       );
-      console.log(response
+      console.log(response);
 
-      );
-      
       if (response.status === 200 && response.data.meals) {
         const meals = response.data.meals.map((meal) => ({
           name: meal.strMeal,
           image: meal.strMealThumb,
-          idMeal: meal.idMeal
+          idMeal: meal.idMeal,
         }));
-  
+
         const botMessage = {
           meals, // Add meals array here
           sender: "bot",
           id: `res${Math.floor(Math.random() * 1000000)}`,
-          date: new Date(),
+          date: new Date()
+            .toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })
+            .replace(/\s/g, " "),
         };
-        setMessage((prev) => [...prev, botMessage]);
+        // setMessage((prev) => [...prev, botMessage]);
+        addMessages(botMessage);
       } else {
         const botMessage = {
           text: "No meals found for the given ingredients.",
           sender: "bot",
           id: `res${Math.floor(Math.random() * 1000000)}`,
-          date: new Date(),
+          date: new Date()
+            .toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })
+            .replace(/\s/g, " "),
         };
-        setMessage((prev) => [...prev, botMessage]);
+        // setMessage((prev) => [...prev, botMessage]);
+        addMessages(botMessage);
       }
     } catch (error) {
       console.error("Error generating recipe:", error);
@@ -71,14 +97,20 @@ const Chat = () => {
         text: "An error occurred while fetching recipes. Please try again later.",
         sender: "bot",
         id: `err${Math.floor(Math.random() * 1000000)}`,
-        date: new Date(),
+        date: new Date()
+          .toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })
+          .replace(/\s/g, " "),
       };
-      setMessage((prev) => [...prev, botMessage]);
+      // setMessage((prev) => [...prev, botMessage]);
+      addMessages(botMessage);
     } finally {
       setLoading(false);
     }
   };
-  
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -89,7 +121,6 @@ const Chat = () => {
     setShowModal(!showModal);
     console.log("clicked");
   };
-
 
   return (
     <div className="flex flex-col h-screen bg-orange-200">
@@ -126,8 +157,6 @@ const Chat = () => {
                 navigate("/login");
               });
             }}
-            
-            
           >
             <small>LogOut</small>
           </li>
@@ -136,12 +165,12 @@ const Chat = () => {
 
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {message.map(({ text, sender, id, meals, date }) => (
+        {messages.map(({ text, sender, id, meals, date }) => (
           <div
             className={`max-w-md flex flex-col shadow rounded-lg p-3 ${
               sender === "user"
                 ? "bg-orange-400 text-white ml-auto"
-                : "mr-auto bg-orange-800 text-black"
+                : "mr-auto bg-orange-800 text-orange-400"
             }`}
             key={id}
           >
@@ -152,31 +181,28 @@ const Chat = () => {
             {meals && (
               <div className="grid grid-cols-1 gap-4 mt-2">
                 {meals.map((meal) => (
-                  <Link to={`/meal-detail/${meal.name}/${meal.idMeal}`}>
-                     <div
+                  <Link
                     key={meal.idMeal}
-                    className="flex flex-col items-center bg-white rounded-lg shadow p-2"
+                    to={`/meal-detail/${meal.name}/${meal.idMeal}`}
                   >
-                    <img
-                      src={meal.image}
-                      alt={meal.name}
-                      className="w-32 h-32 object-cover rounded-md"
-                    />
-                    <p className="mt-2 text-center font-medium">{meal.name}</p>
-                  </div>
+                    <div className="flex flex-col items-center bg-white rounded-lg shadow p-2">
+                      <img
+                        src={meal.image}
+                        alt={meal.name}
+                        className="w-32 h-32 object-cover rounded-md"
+                      />
+                      <p className="mt-2 text-center font-medium">
+                        {meal.name}
+                      </p>
+                    </div>
                   </Link>
-                 
                 ))}
               </div>
             )}
 
             {/* Timestamp */}
             <small className="ml-auto text-sm text-orange-200">
-              <span className="text-[13px]">{`${date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}`}</span>
+              <span className="text-[13px]">{`${date}`}</span>
             </small>
           </div>
         ))}
