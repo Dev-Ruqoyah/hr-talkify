@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Authentication/Login";
-import Chat from "./pages/Chat/chat";
+import Chat from "./pages/Chats/ChatPage";
 import { AuthProvider } from "./context/AuthContext";
 import MealDetails from "./pages/Meal/DisplayMeal";
 import NotFoundPage from "./pages/Error/Error";
