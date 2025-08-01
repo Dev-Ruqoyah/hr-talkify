@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { doCreateUserEmailAndPassword, doSignInWithGoogle } from "../../firebase/auth";
+import {
+  doCreateUserEmailAndPassword,
+  doSignInWithGoogle,
+} from "../../firebase/auth";
 import { Navigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 import toast from "react-hot-toast";
+import { FaEyeSlash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa6";
 
 const Login = () => {
   const { userLoggedIn } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const[passwordShoe,setpasswordShow] = useState(false)
 
   const initialValues = {
     email: "",
@@ -23,19 +29,23 @@ const Login = () => {
       .min(8, "Password must be 8 or more characters"),
   });
 
-  const onSubmitGoogle = async () => {
-    if (!isSigningIn) {
-      try {
-        setIsSigningIn(true);
-        await doSignInWithGoogle();
-      } catch (error) {
-        console.error(error);
-        toast.error(error);
-      } finally {
-        setIsSigningIn(false);
+    const onSubmitGoogle = async () => {
+      if (!isSigningIn) {
+        try {
+          setIsSigningIn(true);
+          await doSignInWithGoogle();
+        } catch (error) {
+          console.error(error);
+          toast.error(error);
+        } finally {
+          setIsSigningIn(false);
+        }
       }
-    }
-  };
+    };
+  const passwordVisibility = () =>{
+    setpasswordShow(!passwordShoe)
+  
+  }
 
   return (
     <>
@@ -58,7 +68,10 @@ const Login = () => {
               try {
                 if (!isSigningIn) {
                   setIsSigningIn(true);
-                  await doCreateUserEmailAndPassword(values.email, values.password);
+                  await doCreateUserEmailAndPassword(
+                    values.email,
+                    values.password
+                  );
                   toast.success("Sign-in successful!");
                 }
               } catch (error) {
@@ -70,7 +83,15 @@ const Login = () => {
               }
             }}
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
               <form onSubmit={handleSubmit} className="mb-3">
                 <div className="mb-4">
                   <label
@@ -86,7 +107,7 @@ const Login = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="Enter your email"
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 ${
+                    className={`w-full px-4 py-2 border rounded-md outline-0 ${
                       errors.email && touched.email ? "border-red-500" : ""
                     }`}
                   />
@@ -101,27 +122,35 @@ const Login = () => {
                   >
                     Password
                   </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="Enter your password"
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 ${
-                      errors.password && touched.password ? "border-red-500" : ""
-                    }`}
-                  />
+                  <div className="border border-red-100 flex items-center rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 pr-2">
+                    <input
+                      type={passwordShoe?"text":"password"}
+                      id="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="Enter your password"
+                      className={`w-full px-4 py-2 outline-0  ${
+                        errors.password && touched.password
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                    />
+                    <button onClick={passwordVisibility}>{passwordShoe?<FaEyeSlash/>:<FaEye/>}</button>
+                  </div>
+
                   {errors.password && touched.password && (
                     <small className="text-red-600">{errors.password}</small>
                   )}
                 </div>
                 <button
-                  type="submit"
+                  
                   className="w-full px-4 py-2 bg-orange-500 text-white font-semibold rounded-md shadow-md hover:bg-orange-600 transition duration-200"
                   disabled={isSubmitting || isSigningIn}
                 >
-                  {isSubmitting || isSigningIn ? "Signing In..." : "Sign in with Email"}
+                  {isSubmitting || isSigningIn
+                    ? "Signing In..."
+                    : "Sign in with Email"}
                 </button>
               </form>
             )}
